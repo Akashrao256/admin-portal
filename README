@@ -1,0 +1,25 @@
+# CertifyMe Full Stack Assessment
+
+## Tech Stack
+
+- Flask (Backend)
+- SQLite (Database)
+- HTML/CSS/JS (Frontend)
+
+## Features
+
+- Admin Signup & Login
+- Session-based Authentication
+- Create & View Opportunities
+- Data persistence
+
+## How to run
+
+### Backend
+
+cd backend
+python app.py
+
+### Frontend
+
+Open admin.html using Live Server
