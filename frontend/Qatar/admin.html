@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qatar Foundation Admin Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="toast" id="toast"></div>
+
+    <main class="app-shell">
+        <section class="auth-shell" id="authShell">
+            <div class="auth-card">
+                <div class="brand-panel">
+                    <div class="brand-badge">Qatar Foundation</div>
+                    <h1>Universal Skills Passport</h1>
+                    <p>Manage admin access and create opportunity programs from one clean, focused interface.</p>
+                    <div class="brand-stats">
+                        <div class="brand-stat">
+                            <span>Auth</span>
+                            <strong>Flask Sessions</strong>
+                        </div>
+                        <div class="brand-stat">
+                            <span>Storage</span>
+                            <strong>SQLite Backend</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-panel">
+                    <div class="form-view active" id="loginView">
+                        <div class="form-header">
+                            <p class="eyebrow">Admin Login</p>
+                            <h2>Welcome back</h2>
+                            <p>Sign in to access your opportunity dashboard.</p>
+                        </div>
+
+                        <form id="loginForm" novalidate>
+                            <label class="field">
+                                <span>Email address</span>
+                                <input type="email" id="loginEmail" placeholder="admin@qf.org.qa" autocomplete="email">
+                                <small class="field-error" id="loginEmailErr">Please enter a valid email address.</small>
+                            </label>
+
+                            <label class="field">
+                                <span>Password</span>
+                                <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password">
+                                <small class="field-error" id="loginPasswordErr">Please enter your password.</small>
+                            </label>
+
+                            <label class="checkbox-row">
+                                <input type="checkbox" id="loginRememberMe">
+                                <span>Remember me</span>
+                            </label>
+
+                            <button type="submit" class="btn-primary">Sign In</button>
+                        </form>
+
+                        <p class="switch-text">
+                            Don’t have an account?
+                            <button type="button" class="link-btn" data-target="signupView">Create one</button>
+                        </p>
+                    </div>
+
+                    <div class="form-view" id="signupView">
+                        <div class="form-header">
+                            <p class="eyebrow">Admin Signup</p>
+                            <h2>Create account</h2>
+                            <p>Register a new admin account for the portal.</p>
+                        </div>
+
+                        <form id="signupForm" novalidate>
+                            <label class="field">
+                                <span>Full name</span>
+                                <input type="text" id="signupName" placeholder="Enter your full name" autocomplete="name">
+                                <small class="field-error" id="signupNameErr">Please enter your full name.</small>
+                            </label>
+
+                            <label class="field">
+                                <span>Email address</span>
+                                <input type="email" id="signupEmail" placeholder="admin@qf.org.qa" autocomplete="email">
+                                <small class="field-error" id="signupEmailErr">Please enter a valid email address.</small>
+                            </label>
+
+                            <label class="field">
+                                <span>Password</span>
+                                <input type="password" id="signupPassword" placeholder="Minimum 8 characters" autocomplete="new-password">
+                                <small class="field-error" id="signupPasswordErr">Password must be at least 8 characters.</small>
+                            </label>
+
+                            <label class="field">
+                                <span>Confirm password</span>
+                                <input type="password" id="signupConfirmPassword" placeholder="Re-enter password" autocomplete="new-password">
+                                <small class="field-error" id="signupConfirmPasswordErr">Passwords do not match.</small>
+                            </label>
+
+                            <button type="submit" class="btn-primary">Create Account</button>
+                        </form>
+
+                        <p class="switch-text">
+                            Already have an account?
+                            <button type="button" class="link-btn" data-target="loginView">Sign in</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-shell" id="dashboardShell">
+            <header class="dashboard-topbar">
+                <div>
+                    <p class="eyebrow">Admin Dashboard</p>
+                    <h2>Opportunity Management</h2>
+                </div>
+                <div class="topbar-actions">
+                    <div class="admin-chip">
+                        <span class="avatar" id="adminAvatar">AD</span>
+                        <div>
+                            <strong id="adminName">Admin</strong>
+                            <p id="adminEmail">admin@qf.org.qa</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary" id="logoutBtn">Sign Out</button>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <section class="summary-card">
+                    <div>
+                        <p class="eyebrow">Overview</p>
+                        <h3>Your opportunities</h3>
+                        <p>Create and manage learning programs tied to your admin account.</p>
+                    </div>
+                    <div class="summary-metric">
+                        <span>Total Opportunities</span>
+                        <strong id="opportunityCount">0</strong>
+                    </div>
+                </section>
+
+                <section class="composer-card">
+                    <div class="section-header">
+                        <div>
+                            <p class="eyebrow">Create</p>
+                            <h3>Add a new opportunity</h3>
+                        </div>
+                    </div>
+
+                    <form id="opportunityForm" class="opportunity-form" novalidate>
+                        <label class="field">
+                            <span>Opportunity Name</span>
+                            <input type="text" id="oppName" placeholder="Full Stack Web Development">
+                        </label>
+
+                        <label class="field">
+                            <span>Duration</span>
+                            <input type="text" id="oppDuration" placeholder="6 Months">
+                        </label>
+
+                        <label class="field">
+                            <span>Start Date</span>
+                            <input type="date" id="oppStartDate">
+                        </label>
+
+                        <label class="field field-full">
+                            <span>Description</span>
+                            <textarea id="oppDescription" placeholder="Describe the opportunity..."></textarea>
+                        </label>
+
+                        <label class="field field-full">
+                            <span>Skills to Gain</span>
+                            <input type="text" id="oppSkills" placeholder="HTML, CSS, JavaScript, Flask">
+                        </label>
+
+                        <label class="field">
+                            <span>Category</span>
+                            <select id="oppCategory">
+                                <option value="">Select Category</option>
+                                <option value="technology">Technology</option>
+                                <option value="business">Business</option>
+                                <option value="design">Design</option>
+                                <option value="marketing">Marketing</option>
+                                <option value="data">Data Science</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </label>
+
+                        <label class="field">
+                            <span>Maximum Applicants</span>
+                            <input type="number" id="oppMaxApplicants" placeholder="100">
+                        </label>
+
+                        <label class="field field-full">
+                            <span>Future Opportunities</span>
+                            <textarea id="oppFuture" placeholder="Describe future roles or next steps..."></textarea>
+                        </label>
+
+                        <div class="form-actions field-full">
+                            <button type="submit" class="btn-primary">Create Opportunity</button>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="list-card">
+                    <div class="section-header">
+                        <div>
+                            <p class="eyebrow">Saved Data</p>
+                            <h3>Opportunity List</h3>
+                        </div>
+                        <button type="button" class="btn-secondary" id="refreshBtn">Refresh</button>
+                    </div>
+
+                    <div class="opportunities-grid" id="opportunitiesGrid"></div>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <script src="admin.js"></script>
+</body>
+</html>
