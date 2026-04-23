@@ -1,25 +1,46 @@
 # CertifyMe Full Stack Assessment
 
 ## Tech Stack
-
 - Flask (Backend)
 - SQLite (Database)
 - HTML/CSS/JS (Frontend)
 
 ## Features
-
 - Admin Signup & Login
+- Forgot Password (token-based)
 - Session-based Authentication
-- Create & View Opportunities
-- Data persistence
+- Create, View, Edit, Delete Opportunities
+- Data Persistence
+- User-specific Data Isolation
 
-## How to run
+## API Endpoints
+
+### Auth
+POST /signup  
+POST /login  
+POST /forgot-password  
+
+### Opportunities
+GET /opportunities  
+POST /opportunities  
+PUT /opportunities/<id>  
+DELETE /opportunities/<id>  
+
+## How to Run
 
 ### Backend
-
-cd backend
-python app.py
+cd backend  
+pip install -r requirements.txt  
+python app.py  
 
 ### Frontend
+Open `admin.html` using Live Server
 
-Open admin.html using Live Server
+## Database
+- SQLite is used
+- Database is created automatically when the backend runs
+
+## Notes
+- No UI changes were made as per instructions
+- All data is stored in the database (no hardcoded data)
+- Each admin can only access their own opportunities
