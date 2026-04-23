@@ -2,13 +2,14 @@ import os
 import sqlite3
 from functools import wraps
 
-from flask import Flask, g, jsonify, request, session
+from flask import Flask, g, jsonify, request, send_from_directory, session
 from flask_cors import CORS
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE_PATH = os.path.join(BASE_DIR, "app.db")
+FRONTEND_DIR = os.path.join(os.path.dirname(BASE_DIR), "frontend")
 
 
 app = Flask(__name__)
@@ -119,7 +120,14 @@ def login_required(view_func):
 
 @app.get("/")
 def index():
-    return jsonify({"message": "Backend is running"})
+    return send_from_directory(FRONTEND_DIR, "admin.html")
+
+
+@app.get("/<path:path>")
+def frontend_assets(path):
+    if path.startswith("api/"):
+        return jsonify({"message": "Not found"}), 404
+    return send_from_directory(FRONTEND_DIR, path)
 
 
 @app.post("/api/auth/signup")
@@ -204,6 +212,40 @@ def login():
 @login_required
 def me(admin):
     return jsonify({"admin": row_to_admin(admin)})
+
+
+@app.post("/api/auth/logout")
+def logout():
+    session.clear()
+    return jsonify({"message": "Logged out successfully"})
+
+
+@app.post("/api/auth/forgot-password")
+def forgot_password():
+    data = request.get_json(silent=True) or {}
+    email = (data.get("email") or "").strip().lower()
+
+    if not email:
+        return jsonify({"message": "Email is required"}), 400
+
+    db = get_db()
+    admin = db.execute(
+        "SELECT id FROM admins WHERE email = ?",
+        (email,),
+    ).fetchone()
+
+    if admin is None:
+        return jsonify(
+            {
+                "message": "If an account exists for that email, a reset link has been sent"
+            }
+        )
+
+    return jsonify(
+        {
+            "message": "Password reset is not configured for email delivery yet. Contact an administrator."
+        }
+    )
 
 
 @app.post("/api/opportunities")
